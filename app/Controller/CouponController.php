@@ -11,9 +11,9 @@ class CouponController extends AbstractController
 {
     /**
      * @Inject
-     * @var UserHandler
+     * @var CouponHandler
      */
-    public $UserHandler;
+    public $CouponHandler;
 
 
     /**
@@ -24,7 +24,7 @@ class CouponController extends AbstractController
         // 验证商品创建
         $params = $this->request->all();
 
-        return apiReturn(ErrorCode::SUCCESS, '', $this->UserHandler->create($params));
+        return apiReturn(ErrorCode::SUCCESS, '', $this->CouponHandler->create($params));
     }
 
 
