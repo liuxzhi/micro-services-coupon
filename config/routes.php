@@ -11,6 +11,6 @@ declare(strict_types=1);
  */
 use Hyperf\HttpServer\Router\Router;
 
-Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
+Router::addRoute(['GET', 'POST'], '/', 'App\Controller\IndexController@index');
 Router::addRoute(['GET', 'POST'], '/coupon/create', 'App\Controller\CouponController@create');
 Router::addRoute(['GET', 'POST'], '/coupon/get', 'App\Controller\CouponController@get');
