@@ -1,14 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of Hyperf.
- *
- * @link     https://www.hyperf.io
- * @document https://hyperf.wiki
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
- */
+
 namespace App\Traits\Trace;
 
 use Hyperf\Utils\Context;
@@ -23,10 +16,11 @@ trait Trace
 	/**
 	 * 设置traceId.
 	 *
-	 * @param $traceId
+	 * @param mixed $traceId
 	 * @param mixed $coverContext
 	 */
-	protected function putTraceId($traceId = false, $coverContext = true)
+
+	protected function putTraceId($traceId = false, $coverContext = true) :void
 	{
 		if ($coverContext || ! Context::get('trace_id')) {
 			$traceId || $traceId = $this->getTraceId();
@@ -34,7 +28,7 @@ trait Trace
 		}
 	}
 
-	protected function clearTraceId()
+	protected function clearTraceId() :void
 	{
 		Context::destroy('trace_id');
 	}
@@ -44,7 +38,7 @@ trait Trace
 	 *
 	 * @return string
 	 */
-	private function getTraceId()
+	private function getTraceId() :string
 	{
 		return sha1(uniqid(
 			            '',
