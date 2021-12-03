@@ -6,6 +6,9 @@ namespace App\Logic\Coupon;
 
 use Hyperf\Di\Annotation\Inject;
 
+use App\Contract\CouponServiceInterface;
+use App\Contract\CouponGoodsServiceInterface;
+use App\Contract\Rpc\GoodsServiceInterface;
 use App\Exception\BusinessException;
 use App\Constants\BusinessErrorCode;
 use App\Constants\Coupon\CouponConstants;
