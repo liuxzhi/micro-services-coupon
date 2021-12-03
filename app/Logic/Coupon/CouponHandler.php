@@ -28,9 +28,9 @@ class CouponHandler
 
 	/**
 	 * @Inject
-	 * @var MerchandiseServiceInterface
+	 * @var GoodsServiceInterface
 	 */
-	protected $MerchandiseService;
+	protected $GoodsService;
 
 
 	/**
@@ -45,19 +45,19 @@ class CouponHandler
 		try {
 			// 从商品中心获取渠道商品(RPC调用)
 			$conditions[] = ["business_id", 'IN', explode(",", $params['business_ids'])];
-			$businessLineMerchandiseList = $this->MerchandiseService->getGoodsAppList($conditions, [],
+			$businessMerchandiseList = $this->GoodsService->getGoodsAppList($conditions, [],
 			                                                                          ["goods.id as goods_id", "goods_app.app_id"]);
 
 			Db::beginTransaction();
 			// 创建优惠券商品对应关系
 			if ($params['scope'] == CouponConstants::COUPON_SCOPE_ALL) {
-				$params['scope_goods_ids'] = $businessLineMerchandiseList;
+				$params['scope_goods_ids'] = $businessMerchandiseList;
 				$params['scope_limit_goods_ids'] = [];
 
 			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART && $params['scope_goods_ids']) {
 
 				$scopeGoodsIds = $params['scope_goods_ids'];
-				$scopeLimitGoodsIds = array_filter($businessLineMerchandiseList, function ($v) use ($scopeGoodsIds) {
+				$scopeLimitGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeGoodsIds) {
 					return !in_array($v, $scopeGoodsIds);
 				});
 
@@ -66,7 +66,7 @@ class CouponHandler
 			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART_UNAVAILABLE && $params['scope_limit_goods_ids']) {
 
 				$scopeLimitGoodsIds = $params['scope_limit_goods_ids'];
-				$scopeGoodsIds = array_filter($businessLineMerchandiseList, function ($v) use ($scopeLimitGoodsIds) {
+				$scopeGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeLimitGoodsIds) {
 					return !in_array($v, $scopeLimitGoodsIds);
 				});
 
