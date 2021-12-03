@@ -9,5 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-$dependencies = serviceMap();
-return $dependencies;
+
+$dependencies =  [
+	App\Contract\Rpc\GoodsServiceInterface::class => App\RpcService\GoodsService::class,
+];
+
+$serviceDependencies = serviceMap();
+return array_merge($serviceDependencies, $dependencies);
