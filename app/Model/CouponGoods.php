@@ -12,7 +12,7 @@ namespace App\Model;
  * @property \Carbon\Carbon $created_at 
  * @property \Carbon\Carbon $updated_at 
  */
-class CouponGood extends Model
+class CouponGoods extends Model
 {
     /**
      * The table associated with the model.
