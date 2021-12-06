@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 namespace App\Service;
-use App\Contract\CouponGoodsServiceInterface;
-use App\Model\CouponGoods;
+use App\Contract\CouponMerchandiseServiceInterface;
+use App\Model\CouponMerchandise;
 use App\Model\Model;
 
-class CouponGoodsService extends AbstractService implements CouponGoodsServiceInterface
+class CouponMerchandiseService extends AbstractService implements CouponMerchandiseServiceInterface
 {
 
 	/**
@@ -15,7 +15,7 @@ class CouponGoodsService extends AbstractService implements CouponGoodsServiceIn
 	 */
 	public function getModelObject() :Model
 	{
-		return make(CouponGoods::class);
+		return make(CouponMerchandise::class);
 	}
 
 
@@ -25,9 +25,9 @@ class CouponGoodsService extends AbstractService implements CouponGoodsServiceIn
 	 *
 	 * @return mixed
 	 */
-	public function deleteCouponGoods($couponId)
+	public function deleteCouponMerchandise($couponId)
 	{
-		return CouponGoods::where("coupon_id", "=", $couponId)->delete();
+		return CouponMerchandise::where("coupon_id", "=", $couponId)->delete();
 	}
 
 	/**
@@ -38,7 +38,7 @@ class CouponGoodsService extends AbstractService implements CouponGoodsServiceIn
 	 *
 	 * @return mixed
 	 */
-	public function createCouponGoods($couponId, $params)
+	public function createCouponMerchandise($couponId, $params)
 	{
 		$couponGoodsList = $params['scope_goods_ids'];
 		foreach ($couponGoodsList as &$couponGoods) {
@@ -47,7 +47,7 @@ class CouponGoodsService extends AbstractService implements CouponGoodsServiceIn
 			$couponGoods['updated_at'] = time();
 		}
 
-		return CouponGoods::insert($couponGoodsList);
+		return CouponMerchandise::insert($couponGoodsList);
 	}
 
 
@@ -58,7 +58,7 @@ class CouponGoodsService extends AbstractService implements CouponGoodsServiceIn
 	 * @param array $columns
 	 * @return array
 	 */
-	public function getCouponGoodsList(array $conditions=[], array $options=[], array $columns = ['*']) :array
+	public function getCouponMerchandiseList(array $conditions=[], array $options=[], array $columns = ['*']) :array
 	{
 		$model = $this->getModelObject();
 		$data = $this->optionWhere($model, $conditions, $options)->select($columns)->get();

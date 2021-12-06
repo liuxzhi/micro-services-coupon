@@ -59,21 +59,21 @@ class CouponHandler
 			Db::beginTransaction();
 			// 创建优惠券商品对应关系
 			if ($params['scope'] == CouponConstants::COUPON_SCOPE_ALL) {
-				$params['scope_goods_ids'] = $businessMerchandiseList;
+				$params['scope_merchandise_ids'] = $businessMerchandiseList;
 				$params['scope_limit_goods_ids'] = [];
 
 			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART && $params['scope_goods_ids']) {
 
-				$scopeGoodsIds = $params['scope_goods_ids'];
+				$scopeGoodsIds = $params['scope_merchandise_ids'];
 				$scopeLimitGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeGoodsIds) {
 					return !in_array($v, $scopeGoodsIds);
 				});
 
-				$params['scope_limit_goods_ids'] = array_values($scopeLimitGoodsIds);
+				$params['scope_limit_merchandise_ids'] = array_values($scopeLimitGoodsIds);
 
 			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART_UNAVAILABLE && $params['scope_limit_goods_ids']) {
 
-				$scopeLimitGoodsIds = $params['scope_limit_goods_ids'];
+				$scopeLimitGoodsIds = $params['scope_limit_merchandise_ids'];
 				$scopeGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeLimitGoodsIds) {
 					return !in_array($v, $scopeLimitGoodsIds);
 				});
