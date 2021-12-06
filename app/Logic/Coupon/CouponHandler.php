@@ -42,7 +42,8 @@ class CouponHandler
 	 *
 	 * @param $params
 	 *
-	 * @return array
+	 * @return int[]
+	 * @throws throwable
 	 */
 	public function create($params)
 	{
@@ -62,23 +63,23 @@ class CouponHandler
 				$params['scope_merchandise_ids'] = $businessMerchandiseList;
 				$params['scope_limit_goods_ids'] = [];
 
-			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART && $params['scope_goods_ids']) {
+			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART && $params['scope_merchandise_ids']) {
 
-				$scopeGoodsIds = $params['scope_merchandise_ids'];
-				$scopeLimitGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeGoodsIds) {
-					return !in_array($v, $scopeGoodsIds);
+				$scopeMerchandiseIds = $params['scope_merchandise_ids'];
+				$scopeLimitGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeMerchandiseIds) {
+					return !in_array($v, $scopeMerchandiseIds);
 				});
 
 				$params['scope_limit_merchandise_ids'] = array_values($scopeLimitGoodsIds);
 
-			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART_UNAVAILABLE && $params['scope_limit_goods_ids']) {
+			} elseif ($params['scope'] == CouponConstants::COUPON_SCOPE_PART_UNAVAILABLE && $params['scope_limit_merchandise_ids']) {
 
-				$scopeLimitGoodsIds = $params['scope_limit_merchandise_ids'];
-				$scopeGoodsIds = array_filter($businessMerchandiseList, function ($v) use ($scopeLimitGoodsIds) {
-					return !in_array($v, $scopeLimitGoodsIds);
+				$scopeLimitMerchandiseIds = $params['scope_limit_merchandise_ids'];
+				$scopeMerchandiseIds = array_filter($businessMerchandiseList, function ($v) use ($scopeLimitMerchandiseIds) {
+					return !in_array($v, $scopeLimitMerchandiseIds);
 				});
 
-				$params['scope_goods_ids'] =  array_values($scopeGoodsIds);
+				$params['scope_merchandise_ids'] =  array_values($scopeMerchandiseIds);
 
 			} else {
 				throw new BusinessException(BusinessErrorCode::COUPON_SCOPE_ERROR);
@@ -88,7 +89,7 @@ class CouponHandler
 			$coupon = $this->CouponService->create($params);
 			$couponId = (int)$coupon['id'];
 
-			// 创建优惠券商品信息
+			// 创建优惠券商品关联关系
 			$this->CouponMerchandiseService->createCouponMerchandise($couponId, $params);
 
 			Db::commit();
