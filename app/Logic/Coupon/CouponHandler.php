@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Logic\Coupon;
 
+use App\Model\CouponGoods;
 use Hyperf\Di\Annotation\Inject;
 
 use App\Contract\CouponServiceInterface;
@@ -46,10 +47,18 @@ class CouponHandler
 	public function create($params)
 	{
 		try {
+
 			// 从商品中心获取渠道商品(RPC调用)
 			$conditions=[];
 			$result = $this->MerchandiseService->merchandiseList($conditions);
-            return $result['body']['list'];
+            if($result['code'] != 0 || empty($result['body']['list'])) {
+            	throw new BusinessException(CouponConstants::COUPON_MERCHANDISE_ERROR);
+            }
+
+			$businessMerchandiseList = [];
+            foreach ($result['body']['list'] as $businessMerchandise) {
+	            $businessMerchandiseList[] = ['goods_id' => $businessMerchandise['merchandise_id'], 'app_id' => 1 ];
+            }
 
 
 			Db::beginTransaction();

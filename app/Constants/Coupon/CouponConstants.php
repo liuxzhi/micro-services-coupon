@@ -88,4 +88,8 @@ class CouponConstants extends AbstractConstants
 	 */
 	const COUPON_SCOPE_PART_UNAVAILABLE = 3;
 
+	/**
+	 * @Message("获取优惠券商品失败")
+	 */
+	const COUPON_MERCHANDISE_ERROR = 4;
 }
