@@ -7,7 +7,7 @@ namespace App\Logic\Coupon;
 use Hyperf\Di\Annotation\Inject;
 
 use App\Contract\CouponServiceInterface;
-use App\Contract\CouponGoodsServiceInterface;
+use App\Contract\CouponMerchandiseServiceInterface;
 use App\Contract\Rpc\MerchandiseServiceInterface;
 use App\Exception\BusinessException;
 use App\Constants\BusinessErrorCode;
@@ -26,9 +26,9 @@ class CouponHandler
 
 	/**
 	 * @Inject
-	 * @var CouponGoodsServiceInterface
+	 * @var CouponMerchandiseServiceInterface
 	 */
-	protected $CouponGoodsService;
+	protected $CouponMerchandiseService;
 
 	/**
 	 * @Inject
@@ -89,7 +89,7 @@ class CouponHandler
 			$couponId = (int)$coupon['id'];
 
 			// 创建优惠券商品信息
-			$this->CouponGoodsService->createCouponGoods($couponId, $params);
+			$this->CouponMerchandiseService->createCouponMerchandise($couponId, $params);
 
 			Db::commit();
 
