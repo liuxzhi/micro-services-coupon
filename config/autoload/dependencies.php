@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 
 $dependencies =  [
-	App\Contract\Rpc\GoodsServiceInterface::class => App\RpcService\GoodsService::class,
+	App\Contract\Rpc\MerchandiseServiceInterface::class => App\RpcService\MerchandiseService::class,
 ];
 
 $serviceDependencies = serviceMap();
