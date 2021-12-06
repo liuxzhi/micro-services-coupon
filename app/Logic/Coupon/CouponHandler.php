@@ -118,6 +118,5 @@ class CouponHandler
 			$businessMerchandiseList[] = ['merchandise_id' => $businessMerchandise['merchandise_id'], 'app_id' => 1 ];
 		}
 		return $businessMerchandiseList;
-
 	}
 }
