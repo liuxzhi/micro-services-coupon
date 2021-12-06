@@ -12,26 +12,26 @@ namespace App\Model;
  * @property \Carbon\Carbon $created_at 
  * @property \Carbon\Carbon $updated_at 
  */
-class CouponGoods extends Model
+class CouponMerchandise extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'coupon_goods';
+    protected $table = 'coupon_merchandise';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id', 'business_line_id', 'coupon_id', 'goods_id', 'deleted_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'business_id', 'coupon_id', 'merchandise_id', 'deleted_at', 'created_at', 'updated_at'];
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = ['id' => 'integer', 'coupon_id' => 'integer', 'goods_id' => 'integer', 'deleted_at' => 'integer', 'created_at' => 'integer', 'updated_at' => 'integer'];
+    protected $casts = ['id' => 'integer', 'coupon_id' => 'integer', 'merchandise_id' => 'integer', 'deleted_at' => 'integer', 'created_at' => 'integer', 'updated_at' => 'integer'];
 
 	protected $dateFormat = 'U';
 }

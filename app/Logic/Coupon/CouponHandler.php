@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Logic\Coupon;
 
-use App\Model\CouponGoods;
 use Hyperf\Di\Annotation\Inject;
 
 use App\Contract\CouponServiceInterface;
@@ -15,6 +14,7 @@ use App\Constants\BusinessErrorCode;
 use App\Constants\Coupon\CouponConstants;
 use Hyperf\DbConnection\Db;
 use App\Helper\Log;
+use throwable;
 
 class CouponHandler
 {
@@ -46,20 +46,15 @@ class CouponHandler
 	 */
 	public function create($params)
 	{
+		// 从商品中心获取渠道商品(RPC调用)
+		$conditions=[];
+		$result = $this->MerchandiseService->merchandiseList($conditions);
+		if($result['code'] != 0 || empty($result['body']['list'])) {
+			throw new BusinessException(CouponConstants::COUPON_MERCHANDISE_ERROR);
+		}
+		$businessMerchandiseList = $this->formatBusinessMerchandiseList($result);
+
 		try {
-
-			// 从商品中心获取渠道商品(RPC调用)
-			$conditions=[];
-			$result = $this->MerchandiseService->merchandiseList($conditions);
-            if($result['code'] != 0 || empty($result['body']['list'])) {
-            	throw new BusinessException(CouponConstants::COUPON_MERCHANDISE_ERROR);
-            }
-
-			$businessMerchandiseList = [];
-            foreach ($result['body']['list'] as $businessMerchandise) {
-	            $businessMerchandiseList[] = ['goods_id' => $businessMerchandise['merchandise_id'], 'app_id' => 1 ];
-            }
-
 
 			Db::beginTransaction();
 			// 创建优惠券商品对应关系
@@ -107,4 +102,21 @@ class CouponHandler
 		return ['coupon_id' => $couponId];
 	}
 
+
+	/**
+	 * 格式化商品渠道信心
+	 * @param $result
+	 *
+	 * @return array
+	 */
+	protected function formatBusinessMerchandiseList($result) :array
+	{
+
+		$businessMerchandiseList = [];
+		foreach ($result['body']['list'] as $businessMerchandise) {
+			$businessMerchandiseList[] = ['merchandise_id' => $businessMerchandise['merchandise_id'], 'app_id' => 1 ];
+		}
+		return $businessMerchandiseList;
+
+	}
 }
