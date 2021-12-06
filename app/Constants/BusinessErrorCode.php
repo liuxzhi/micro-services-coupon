@@ -46,7 +46,7 @@ class BusinessErrorCode extends AbstractConstants
 	/**
 	 * @Message("远程HTTP服务错误")
 	 */
-	const HTTP_API_SERVICE_ERROR = 10101;
+	const HTTP_API_SERVER_ERROR = 10101;
 
 	/**
 	 * @Message("HTTP请求错误")
@@ -62,5 +62,10 @@ class BusinessErrorCode extends AbstractConstants
 	 * @Message("HTTP服务响应错误2")
 	 */
 	const HTTP_API_RESPONSE_ERROR2 = 10104;
+
+    /**
+     * @Message("优惠券范围设置错误")
+     */
+	const COUPON_SCOPE_ERROR = 10204;
 
 }

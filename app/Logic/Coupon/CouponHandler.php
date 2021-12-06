@@ -8,7 +8,7 @@ use Hyperf\Di\Annotation\Inject;
 
 use App\Contract\CouponServiceInterface;
 use App\Contract\CouponGoodsServiceInterface;
-use App\Contract\Rpc\GoodsServiceInterface;
+use App\Contract\Rpc\MerchandiseServiceInterface;
 use App\Exception\BusinessException;
 use App\Constants\BusinessErrorCode;
 use App\Constants\Coupon\CouponConstants;
@@ -31,9 +31,9 @@ class CouponHandler
 
 	/**
 	 * @Inject
-	 * @var GoodsServiceInterface
+	 * @var MerchandiseServiceInterface
 	 */
-	protected $GoodsService;
+	protected $MerchandiseService;
 
 
 	/**
@@ -41,15 +41,16 @@ class CouponHandler
 	 *
 	 * @param $params
 	 *
-	 * @return int[]
+	 * @return array
 	 */
 	public function create($params)
 	{
 		try {
 			// 从商品中心获取渠道商品(RPC调用)
-			$conditions[] = ["business_id", 'IN', explode(",", $params['business_ids'])];
-			$businessMerchandiseList = $this->GoodsService->getGoodsAppList($conditions, [],
-			                                                                          ["goods.id as goods_id", "goods_app.app_id"]);
+			$conditions=[];
+			$result = $this->MerchandiseService->merchandiseList($conditions);
+            return $result['body']['list'];
+
 
 			Db::beginTransaction();
 			// 创建优惠券商品对应关系
@@ -76,7 +77,7 @@ class CouponHandler
 				$params['scope_goods_ids'] =  array_values($scopeGoodsIds);
 
 			} else {
-				throw new BusinessException(BusinessErrorCode::COUPON_DELETE_SCOPE_ERROR);
+				throw new BusinessException(BusinessErrorCode::COUPON_SCOPE_ERROR);
 			}
 
 			// 创建优惠券

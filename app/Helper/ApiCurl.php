@@ -70,7 +70,7 @@ class ApiCurl
 			Log::notice('http_api_error', [
 				'message' => $ex->getMessage(),
 			]);
-			throw new BusinessException(BusinessErrorCode::HTTP_API_SERVICE_ERROR);
+			throw new BusinessException(BusinessErrorCode::HTTP_API_SERVER_ERROR);
 		}
 	}
 
